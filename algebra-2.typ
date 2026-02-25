@@ -113,20 +113,16 @@ $
 $
 = Artin 2.2.20(a) The order of products in abelian groups
 
-Let $a,b$ be elements of an abelian group of orders $m,n$ respectively. Then
+Let $a,b$ be elements of an abelian group of orders $m,n$ respectively. Then if $l = lcm(m,n)$, we see that
 $
-  a^m = e
+  (a b)^l = a^l b^l = (a^m)^(frac(l,m)) (b^n)^(frac(l,n)) = 1
 $
-and
-$
-  b^n = e .
-$
+where all exponents are integers since $l$ is a multiple of both $m$ and $n$.
 
-If
-$
-  (a b)^l = e
-$
-then
-$
-  a^l b^l = e
-$
+But for any element $x$, we know that $x^y = 1$ implies that its order divides $y$. So $"ord"(a b) divides lcm(m,n)$.
+
+(Note that this is NOT a consequence of Lagrange's Theorem.
+
+Here's an incorrect argument: the powers of $x$ from 0 to $y$ (with potential repeat elements) form a group $G$, and the powers of $x$ from 0 to $"ord"(a)$ form a group $H$, but the order is the smallest number with this property, so all the elements of $H$ are contained in $G$, so $H$ is a subgroup of $G$, so $"ord"(H) divides "ord"(G)$.
+
+The problem is the repeat elements. For this argument to work, $"ord"(G) = y$, but in fact $G$ is the same group as $H$, so $"ord"(G) = "ord"(x)$ and we can't conclude from this argument that $"ord"(x) divides y$.)
