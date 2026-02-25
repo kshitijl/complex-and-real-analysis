@@ -126,6 +126,8 @@ $
 $
 for every choice of $x_1$ and $x_2$. So there's an infinite 2D space of solutions.
 
+A cleaner approach is to write the solutions as $X_0 + C N$ where $X_0$ is any solution and $N$ is a matrix of nullspace vectors of $A$, where $C$ then parameterizes the specific solution.
+
 == (b)
 No $C$ can make
 $
