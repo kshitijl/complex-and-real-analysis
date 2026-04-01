@@ -1,5 +1,7 @@
 #set page(numbering: "1")
 #import "@preview/ctheorems:1.1.3": *
+#import "@preview/physica:0.9.7": evaluated
+
 #show: thmrules
 #let lemma = thmbox("lemma", "Lemma", base: none)
 #let theorem = thmbox("theorem", "Theorem", base: none)
@@ -34,292 +36,254 @@
 
 Exercises are from Stephen Abbott's _Understanding Analysis_, Second Edition.
 
-= Problem 1: Product topology and pointwise convergence
+= Problem 1: Arzela-Ascoli Part I: A bounded sequence of functions on a countable domain has a convergent subsequence
+Exercise 6.2.13
 
-=== Proof idea
-
-This is straight up just unwinding definitions. The main challenge is that the definitions are a little complicated and have several levels of indirection and conditions.
-
-So it was important to sit quietly for fifteen minutes and concentrate very hard, and also to just explicitly write out what is given and what is to be shown in each of the two directions, even if I didn't yet know how to connect the pieces. It turns out that once that's done the proof is trivial.
-
-== Proof
-
-#theorem[
-  Let $(f_n)$ be a sequence of functions in $Y^X$ and let $f in Y^X$. Then $(f_n)$ converges to $f$ in the product topology if and only if it converges pointwise.
-]
-#proof[
-
-  ($=>$)
-  
-  Let $x_0 in X$ be any point and let $U_0 subset.eq Y$ be an open set containing $f(x_0)$. Let $V_0 subset.eq Y^X$ be the cylinder set
-  $
-    V_0 = O(x_0; U_0) = {f: X -> Y: f(x_0) in U_0} .
-  $
-  
-  This is a valid cylinder since the number of points involved is 1, a finite number. Therefore $V_0$ is an open set in the product topology. And $f in V_0$ since $f(x_0) in U_0$.
-  
-  By convergence of $(f_n) -> f$ in the product topology, there exists some $N in NN$ such that $f_n in V_0$ whenever $n >= N$. By the definition of cylinder set, $f_(n)(x_0) in U_0$ whenever $n >= N$. By the definition of sequence convergence, $(f_(n)(x_0)) -> f(x_0)$. Since $x_0 in X$ was arbitrary, by definition of pointwise converge we have $(f_n) -> f$ pointwise.
-  
-  ($arrow.l.double$)
-  
-  Suppose that $(f_n) -> f$ pointwise and let $U subset.eq Y^X$ be any open set containing $f$, in the product topology. Then there is some cylinder set $V subset.eq Y^X$ such that $f in V subset.eq U$. That is, there exist points $x_1, x_2, ..., x_n in X$ and open sets $U_1, U_2, ..., U_n subset.eq Y$ such that $f(x_i) in U_i$ for each $i$.
-  
-  By pointwise convergence of $(f_n)$ to $f$, there exist natural numbers $M_1, M_2, ..., M_n$ such that $f_(m)(x_i) in U_i$ whenever $m >= M_i$, for each $1 <= i <= n$. Let $M = max(M_1, M_2, ..., M_n)$, which is well-defined since $n$ is finite. Then, whenever $m >= M$ we have $f_(m)(x_i) in U_i$ for all $1 <= i <= n$. By the definition of cylinder sets, $f_(m) in V subset.eq U$ whenever $m >= M$, so $(f_n) -> f$ in the product topology.
-]
-  
-= Problem 2: Whether convergence is uniform depends on the domain
-Exercise 6.2.3
-
-=== Proof idea
-
-For me, the main takeaway from this exercise is that changing the domain can change whether convergence is uniform or merely pointwise. And of course that if a sequence of continuous functions converges pointwise to something that's not continuous, then the convergence couldn't have been uniform.
-
-== Proofs
-
-For each $n in NN$ and $x in [0, infinity)$, let
-$
-  g_(n)(x) = x/(1 + x^n) wide "and" wide h_(n)(x) = cases(
-    1 & "if" x >= 1 slash n,
-    n x quad & "if" 0 <= x < 1 slash n .
-  )
-$
+Let $A = {x_1, x_2, x_3, ...}$ be a countable set. For each $n in NN$ let $f_n$ be defined on $A$ and assume there exists an $M > 0$ such that $abs(f_(n)(x)) <= M$ for all $n in NN$ and $x in A$. 
 
 == (a)
-
-For $x > 1$,
-$
-  0 <= x/(1+x^n) <= x/x^n = x^(1-n) -> 0,
-$
-so by the Squeeze Theorem, $g_(n)(x) -> 0$ for $x > 1$.
-
-$g_(n)(1) = 1 slash 2$ identically.
-
-For $0 <= x < 1$, $x^n -> 0$ so $g_(n)(x) -> x/(1+0) = x$ by the Algebraic Limit Theorem. 
-
-Combining these cases,
-$
-  g_(n)(x) -> cases(
-    x & "if" 0 <= x < 1,
-    1 slash 2 quad & "if" x = 1,
-    0 & "if" x > 1 .
-  )
-$
-
-For $h_(n)(x)$, note that $h_(n)(0) = 0$ for every $n in NN$. And for every $x > 0$, whenever $n > 1 slash x$ we have $h_(n)(x) = 1$. So by the definition of pointwise convergence,
-$
-  h_(n)(x) -> cases(
-    0 quad & "if" x = 0,
-    1 & "if" x > 0 .
-  )
-$
-
-== (b)
-
-Let $g_(n)(x) -> g(x)$ and $h_(n)(x) -> h(x)$.
-
-$g_(n)(x)$ and $h_(n)(x)$ are continuous for every $n in NN$: the former by the Algebraic Continuity Theorem, the latter because the Left Hand Limit, Right Hand Limit and $h_(n)(x)$ are all 1 at $x = 1 slash n$.
-
-If the convergence were uniform the limit functions in both cases would be continuous, by the Continuous Limit Theorem. But $g$ is discontinuous at 1 and $h$ is discontinuous at $0$. Hence the convergence is not uniform.
-
-== (c)
-
-Let $X = [2, infinity)$. Then $(g_n)$ converges uniformly to $g$ on $X$:
-
-#proof[
-  Let $epsilon > 0$ be given. Then pick $N$ such that
-  $
-    1/(2^(N-1)) < epsilon,
-  $
-  for example by setting $N = ceil(2 - log epsilon slash log 2)$. Such an $N$ exists by the Archimedean property.
-
-  Then, for any $x >= 2$ and $n >= N$ we have
-  $
-    x^n >= 2^n >= 2^N .
-  $
-
-  Therefore
-  $
-    0 <= x/(1+x^n) <= x/x^n = 1/x^(n-1) <= 1/2^(n-1) <= 1/2^(N-1) < epsilon .
-  $
-
-  Since the limit function is 0 for all $x in X$, this shows that
-  $
-    abs(g_(n)(x) - g(x)) = abs(g_(n)(x)) < epsilon .
-  $
-
-  Since the choice of $N$ was independent of $x$ and works for all $x in X$, the convergence is uniform.
-]
-
-Also, $(h_n)$ converges uniformly to $h$ on $X$:
-
-#proof[
-  Let $epsilon > 0$ be given. Set $N = 1$. Then for all $x in X$ we have $h_(n)(x) = 1$ and $h(x) = 1$ as well. So $abs(h_(n)(x) - h(x)) = 0 < epsilon$ for all $n >= N$ and all $x in X$.
-]
-
-= Problem 3: Cauchy Criterion for Uniform Convergence
-Exercise 6.2.5
-
-=== Proof idea
-
-The main, kinda tricky idea here is this: to bound $f_n - f$ we invoke the existence of some $f_k$ that's close enough to $f$. Now we get $f_n - f_k$ and $f_k - f$, both of which are bounded. The somewhat surprising thing is that _even though $k$ can depend on the point $x$_, that doesn't break uniform convergence, because we just need such a $k$ to exist. Its value doesn't actually change which $N$ we pick. Of course I stole this idea from Abbott's proof that every Cauchy sequence converges; there, a similar role is played by a term of the convergent subsequence we get after invoking Bolzano-Weierstrass. But the role in this proof is more subtle and interesting, in my opinion.
-
-== Proof
-
-#theorem[
-  A sequence of functions $(f_n)$ defined on a set $A subset.eq RR$ converges uniformly on $A$ if and only if for every $epsilon > 0$ there exists an $N in NN$ such that $abs(f_(n)(x)- f_(m)(x)) < epsilon$ whenever $m,n >= N$ and $x in A$. 
-]
-#proof[
-  ($=>$)
-
-  Suppose $(f_n)$ is a sequence of functions defined on $A subset.eq RR$ that converges uniformly to $f$. Let $epsilon > 0$ be given. Then by the definition of uniform convergence there exists some $N in NN$ such that
-  $
-    abs(f_(n)(x) - f(x)) < epsilon/2
-  $
-  whenever $n >= N$. Then by the triangle inequality we have
-  $
-    abs(f_(n)(x) - f_(m)(x)) = & abs(f_(n)(x) - f(x) + f(x) - f_(m)(x)) \
-    <= & abs(f_(n)(x) - f(x)) + abs(f_(m)(x) - f(x)) \
-    < & epsilon/2 + epsilon/2 \
-    = & epsilon
-  $
-  whenever $n,m >= N$ as desired.
-
-  ($arrow.l.double$)
-
-  Pick any $x_0 in A$ and consider the sequence of real numbers $(f_(n)(x_0))$. The hypotheses of the theorem mean that we may apply Cauchy's Criterion for sequences to this sequence. So this sequence converges and we may define the function
-  $
-    f(x) = lim_(n->infinity) f_(n)(x)
-  $
-  for each $x in A$.
-
-  Let $epsilon > 0$ be given. Choose $N$ such that $abs(f_(n)(x) - f_(m)(x)) < epsilon slash 2$ for each $x in A$ and $n,m >= N$.
-
-  Then for any $x_0 in A$, since the sequence $(f_(n)(x_0)) -> f(x_0)$, there exists some $k >= N$ such that $abs(f_(k)(x_0) - f(x_0)) < epsilon slash 2$.
-
-  (Note that this $k$ may depend on $x_0$. Note also that there may be smaller indices $k' < N$ such that $abs(f_(k')(x_0) - f(x_0)) < epsilon$, but by convergence of $(f_(n)(x_0))$ to $f(x_0)$, any index $k >= max(k', N)$ will then also satisfy $abs(f_(k)(x_0) - f(x_0)) < epsilon$. The important thing is that $N$ doesn't depend on $x_0$, only on $epsilon$. The choice of $k$ is only used to prove that an $N$ that brings all pairs of functions within $epsilon slash 2$ of each other at every point, will also bring any function in the sequence within $epsilon$ of the limit function.)
-
-  Then
-  $
-    abs(f_(n)(x_0) - f(x_0)) = & abs(f_(n)(x_0) - f_(k)(x_0) + f_(k)(x_0) - f(x_0)) \
-    <= & abs(f_(n)(x_0) - f_(k)(x_0)) + abs(f_(k)(x_0) - f(x_0)) \
-    < & epsilon/2 + epsilon/2 \
-    = & epsilon .
-  $
-
-  Since $x_0 in A$ was arbitrary and the choice of $N$ depended only on $epsilon$, we have shown that $f_n -> f$ uniformly on $A$.
-]
-
-= Problem 4: $f(x+1 slash n) -> f$ uniformly when $f$ is uniformly continuous
-Exercise 6.2.7
-
-#theorem[
-  Let $f$ be uniformly continuous on all of $RR$ and define the sequence of functions $(f_n)$ by
-  $
-    f_(n)(x) = f(x + 1/n) .
-  $
-  Then $f_n -> f$ uniformly.
-]
-#proof[
-  Let $epsilon > 0$ be given. By uniform continuity of $f$ on all of $RR$, there exists some $delta > 0$ such that
-  $
-    abs(f(x) - f(y)) < epsilon
-  $
-  whenever $abs(x-y) < delta$, for all pairs of points $x,y in RR$.
-
-  Set $N = 1 + ceil(1 slash delta)$, so that $N > 1 slash delta$ and therefore
-  $
-    1/N < delta .
-  $
-  Then for any $x in RR$ and any $n >= N$ we have
-  $
-    abs((x+1 slash n) - x) = 1 slash n <= 1 slash N < delta .
-  $
-
-  Therefore
-  $
-    abs(f(x+1 slash n) - f(x)) < epsilon,
-  $
-  and the choice of $N$ depended on $delta$, which depended only on $epsilon$, not on the point $x$. So the convergence is uniform.
-]
-
-If $f$ is not uniformly continuous but merely continuous on all of $RR$ then the convergence of $(f_n)$ to $f$ need not be uniform. Take
-$
-  f(x) = x^2 .
-$
-
-Let $epsilon > 0$ be given and suppose that some $N in NN$ were the adequate response according to the definition of uniform convergence. Then for $x = N epsilon$ we have
-$
-  abs(f(x+1/N) - f(x)) = abs((2x)/N + 1/N^2) = abs(2 epsilon + 1/N^2) = 2epsilon + 1/N^2 > epsilon ,
-$
-a contradiction of the condition for uniform convergence.
-
-= Problem 5: Algebraic combinations of uniformly convergent sequences of functions
-Exercise 6.2.9
-
-== (a)
-
-#theorem[
-  Let $(f_n)$ and $(g_n)$ be uniformly convergent sequences of functions on some set $A$. Then $(f_n + g_n)$ is uniformly convergent.
-]
-#proof[
-  Let $(f_n) -> f$ and $(g_n) -> g$. Let $epsilon > 0$ be given.
-
-  By uniform convergence of $(f_n)$ to $f$, there exists some $N_f in NN$ such that $abs(f_(n)(x) - f(x)) < epsilon slash 2$ for all $x in A$ and all $n >= N_f$. Similarly there exists some $N_g in NN$ such that $abs(g_(m)(x) - g(x)) < epsilon slash 2$ for all $x in A$ and $m >= N_g$.
-
-  Let $N = max(N_f, N_g)$ and let $n >= N$. Then
-  $
-    & abs((f_(n)(x) + g_(n)(x)) - (f(x) + g(x))) \
-    <= & abs(f_(n)(x) - f(x)) + abs(g_(n)(x) - g(x)) \
-    < & epsilon/2 + epsilon/2 \
-    = epsilon,
-  $
-  proving that $(f_n + g_n) -> f + g$ uniformly.
-]
-
-== (b)
-
-Let
-$
-  f_(n)(x) = x + 1 slash n
-$
-
-and $g_(n)(x) = f_(n)(x)$. So
-$
-  f_n g_n = (x + 1/n)^2,
-$
-which is the function discussed in the previous problem. Then since $f(x) = x$ is uniformly continuous, by the previous problem $(f_n) -> f$ and $(g_n) -> f$ uniformly. But, as shown in the previous problem, $(f_n g_n) -> x^2$ but not uniformly.
-
-== (c)
 
 #lemma[
-  Let $(f_n)$ be a sequence of functions on some set $A$, converging to $f$. Suppose that there exists some $M > 0$ such that $abs(f_(n)(x)) <= M$ for all $x in A$. Then $abs(f(x)) <= M$ for all $x in A$.
+  Let $x_1 in A$ be fixed. Then $(f_(n)(x_1))$ contains a convergent subsequence.
 ]
 #proof[
-  Fix some $x_0 in A$. Then the sequence $(f_(n)(x_0))$ is a sequence of real numbers satisfying $-M <= f_(n)(x_0) <= M$. By the definition of pointwise convergence, $(f_(n)(x_0)) -> f(x_0)$. Then by the Order Limit Theorem, $-M <= f(x_0) <= M$. Since $x_0 in A$ was arbitrary, we have $abs(f(x)) <= M$ for all $x in A$.
+  Having fixed $x_1 in A$, the sequence $f_(n)(x_1)$ is a bounded sequence of real numbers. By the Bolzano-Weierstrass Theorem, it has a convergent subsequence.
 ]
+
+Consider the subsequence of _functions_ generated by taking the functions whose _values_ at $x_1$ give the convergent subsequence above. To indicate that the subsequence of functions $f_(n_k)$ is generated by considering the values of the functions at $x_1$, we will use the notation $f_(n_k) = f_(1,k)$.
+
+== (b)
+
+By a similar argument, the sequence $(f_(1,k)(x_2))$ is a bounded sequence of real numbers, so it has a convergent subsequence.
+
+Call this subsequence of functions $(f_(2,k))$. Since it is a subsequence of $(f_(1,k))$, this sequence of functions, when evaluated at $x_1$, also converges.
+
+== (c)
+
+In this manner, the sequence $f_(n,k)(x_(n+1))$ is a bounded sequence of real numbers, so it has a convergent subsequence. This defines the sequence $(f_(n+1,k))$.
+
+$(f_(n,k))$ is a subsequence of $f_(m,k)$ whenever $m <= n$, so $f_(n,k)(x_m)$ converges whenever $m <= n$.
+
+We will now define a single subsequence $(f_(m_k))$ of $(f_n)$:
+
+Let $f_(m_1)$ be the first function in the sequence $(f_(1,k))$. Let $f_(m_2)$ be the second function in the sequence $(f_(2,k))$. In general, let $f_(m_j)$ be the $j$'th function in the sequence $(f_(j,k))$.
+
+Then, for every $j$, all but a finite prefix (the first $j$ terms) of $(f_(m_k))$ is a subsequence of $f_(j,k)$. It is a valid subsequence since the indices $m_k$ are strictly increasing: $f_(m_(j+1))$ is the $j+1$'th term of $f_(j+1,k)$, which must appear later in $f_(j,k)$ than $f_(m_j)$ (the $j$'th term of $f_(j,k)$) since $f_(j+1,k)$ is a subsequence of $f_(j,k)$.
+
+Hence $(f_(m_k)(x_i))$ converges for every point $x_i in A$.
+
+= Problem 2: Arzela-Ascoli Part II: Defining equicontinuity
+Exercise 6.2.14
+
+A sequence of functions $(f_n)$ defined on a set $E subset.eq RR$ is called _equicontinuous_ if for every $epsilon > 0$ there exists a $delta > 0$ such that $abs(f_(n)(x) - f_(n)(y)) < epsilon$ for all $n in NN$ and $abs(x-y) < delta$ in $E$.
+
+== (a)
+
+Equicontinuity is a stronger condition than saying that each $f_n$ in the sequence is uniformly continuous, because a single $delta$ works for _every_ $f_n$.
+
+== (b)
+
+Let $g_(n)(x) = x^n$. Individually, each $g_n$ is uniformly continuous on $[0,1]$ since it's a continuous function on a compact domain. But $(g_n)$ is not equicontinuous. Qualitatively, this is because of what happens close to 1: the sequence gets closer and closer to the limiting function
+$
+  g(x) = cases(
+    0 quad & "if" 0 <= x < 1,
+    1 quad & "if" x = 1,
+  )
+$
+so the jump from 0 to 1 happens in a shorter and shorter space as $n$ gets bigger. No single $delta$ can suffice for all $n$, because there will always be some $N$ after which the jump from very-close-to-0 to very-close-to-1 happens in a span of less than $delta$.
+
+= Problem 3: Arzela-Ascoli Part III: A bounded, equicontinuous sequence of functions on a compact domain has a uniformly convergent subsequence
+Exercise 6.2.15
+
+For each $n in NN$, let $f_n$ be a function defined on $[0,1]$. Suppose that $f_n$ is bounded on $[0,1]$ -- that is, there exists an $M > 0$ such that $abs(f_(n)(x)) <= M$ for all $n in NN$ and $x in [0,1]$ -- and that the collection of functions $(f_n)$ is equicontinuous.
+
+== (a)
+
+Let $A = QQ inter [0,1]$. Since $QQ$ is countable, $A$ is also countable. By Problem 1, $evaluated(f_n)_A$ has a convergent subsequence. Equivalently, $(f_n)$ has a subsequence that converges pointwise on every point in $A$. Call it $(g_k)$.
+
+== (b)
+
+Let $epsilon > 0$. By equicontinuity, there exists a $delta > 0$ such that
+$
+  abs(g_(k)(x) - g_(k)(y)) < epsilon/3
+$
+for all $abs(x-y) < delta$ and $k in NN$. Let
+$
+  O = {V_(delta)(r): r in A}
+$
+be the set of $delta$-neighborhoods of every rational point in $[0,1]$. By the density of $QQ$ in $RR$, every real $x in [0,1]$ is within $delta$ of some rational point $q in A$. So $O$ is an open cover of $[0,1]$. By compactness, it has a finite subcover $phi$. Let $r_1, r_2, ..., r_m$ be the centers of $delta$-balls in $phi$.
+
+The sequence of functions $(g_k)$ from part (a) converges pointwise on every $r in A$. In particular it converges for every $r_i$. That is, the sequences
+$
+  (g_(k)(r_i))
+$
+for $1 <= i <= m$ are convergent sequences of real numbers, hence they are Cauchy. So for each $1 <= i <= m$ there exists some $N_i in NN$ such that for all $s, t >= N_i$ we have
+$
+  abs(g_(s)(r_i) - g_(t)(r_i)) < epsilon/3 .
+$
+
+Let $N = max(N_1, N_2, ..., N_m)$, which is defined since $m$ is finite. Then
+$
+  abs(g_(s)(r_i) - g_(t)(r_i)) < epsilon/3
+$
+whenever $s,t >= N$.
+
+== (c)
+
+Let $x$ be an arbitrary point in $[0,1]$. By construction of the finite subcover $phi$ of $delta$-balls centered at the rational points $r_i$, there is at least one $r_i$ such that
+$
+  abs(x-r_i) < delta,
+$
+so
+$
+  abs(g_(k)(x) - g_(k)(r_i)) < epsilon/3
+$
+for all $k in NN$ by equicontinuity of $(f_n)$ (and therefore of its subsequence $(g_k)$) and the choice of $delta$.
+
+Let $s, t >= N$. Then
+$
+  abs(g_(s)(x) - g_(t)(x)) \
+  <= & abs(g_(s)(x) - g_(s)(r_i)) + abs(g_(s)(r_i) - g_(t)(r_i)) + abs(g_(t)(r_i) - g_(t)(x))\
+  < & epsilon/3 + epsilon/3 + epsilon/3 \
+  = & epsilon. 
+$
+
+Since $x$ was arbitrary and $N$ doesn't depend on $x$, by the Cauchy Criterion for Uniform Convergence, $(g_k)$ converges uniformly.
+
+= Problem 4: A counterexample to show that uniform convergence is not enough for differentiation to commute with limits
+Exercise 6.3.3
+
+Define the sequence of functions
+$
+  f_(n)(x) = x/(1 + n x^2) .
+$
+
+Informally, each $f_n$ is bounded since $lim_(x->infinity) f_(n)(x) = 0$ and $lim_(x->-infinity) f_(n)(x) = 0$ and the denominator is never 0. So outside some compact domain the function goes to 0, and inside the compact domain containing 0 it doesn't blow up. Since it's bounded, its extrema must occur in some compact domain, so they must happen when its derivative is zero. In other words, there must exist some $M > 0$ and $x_0 > 0$ such that $abs(f_(n)(x)) < f_(n)(x_0)$ when $abs(x) > M$, so we may apply the Extreme Value Theorem to $[-M, M]$. Using the rules of differentiation, that happens when
+$
+  x = plus.minus 1 / sqrt(n) .
+$
+
+Here is a proof that $x_0 = 1 slash sqrt(n)$ is a global maximum for each $f_n$. $f_(n)(x_0) = 1/(2 sqrt(n))$. Applying the AM-GM inequality to 1 and $n x^2$, we have
+
+$
+  (1 + n x^2)/2 >= sqrt(n)x .
+$
+
+When $x > 0$, rearranging gives
+
+$
+  x/(1 + n x^2) <= 1/(2 sqrt(n))
+$
+
+as desired. This clearly holds for $x=0$ as well. Since $f_(n)(x) < 0$ when $x < 0$, this is a global maximum.
+
+Since $f_n$ is an odd function, it has a global mininum at $-x_0$ with value $-1/(2 sqrt(n))$. 
+
+Thus
+$
+  abs(f_(n)(x)) < 1/(2 sqrt(n))
+$
+for all $x in RR$. We use this to show uniform convergence of $(f_(n))$ to the constant function $f(x) = 0$.
+
+Let $epsilon > 0$ be given. Then pick $N$ large enough such that
+$
+  abs(f_(N)(x) - f(x)) = abs(f_(N)(x)) < 1/(2 sqrt(N)) < epsilon .
+$
+
+This is possible since $1/(2 sqrt(n))$ converges to 0, and by the Archimedean Property. Since $1/(2 sqrt(n))$ is a strictly decreasing function of $n$, we have
+$
+  abs(f_(n)(x)) < epsilon wide "whenever" wide n >= N .
+$
+
+Since this choice of $N$ works for all $x in RR$, the convergence is uniform.
+
+== (b)
+
+Let $f = lim f_n$. Then $f(x) = 0$.
+
+Using the rules of differentiation,
+$
+  f'_(n)(x) = (1 - n x^2)/((1 + n x^2)^2)
+$
+so
+$
+  lim f'_(n)(x) = cases(
+    1 quad & "if" x = 0,
+    0 quad & "if" x != 0
+  )
+$
+since when $x = 0$ the function is identically 1, and when $x != 0$ we may divide the numerator and denominator by $n^2$ to see that the numerator goes to 0 while the denominator goes to $x^4 != 0$, so the limit is 0 by the Algebraic Limit Theorem.
+
+(This already tells us that the sequence of derivatives doesn't converge uniformly: each derivative is continuous on all of $RR$ since it's a rational function with nonzero denominator, but the limit function has a discontinuity at zero.)
+
+So, in this case, $f'(x) = lim f'_(n)(x)$ for every $x in RR backslash {0}$.
+
+= Problem 5: If derivatives converge uniformly and the sequence converges at any point, it converges uniformly
+Exercise 6.3.7
+
+=== Proof idea
+
+This is a simpler version of the technique used in the proof of the Differentiable Limit Theorem: apply MVT to $f_n - f_m$ and use the Cauchy Criterion for Uniform Convergence to bound the difference in the derivatives at a point.
+
+My loose, intuitive idea of this theorem is that if the derivatives converge uniformly, then all the functions differ at most by a constant. So if we can pin down that constant, then the functions actually have to agree.
+
+== Proof
 
 #theorem[
-  Let $(f_n)$ and $(g_n)$ be uniformly convergent sequences of functions on some set $A$. Suppose that there exists some $M > 0$ such that $abs(f_n) <= M$ and $abs(g_n) <= M$ for all $n in NN$. Then $(f_n g_n)$ is uniformly convergent.
+  Let $(f_n)$ be a sequence of differentiable functions defined on the closed interval $[a,b]$, and assume $(f'_n)$ converges uniformly on $[a,b]$. If there exists a point $x_0 in [a,b]$ where $f_(n)(x_0)$ is convergent, then $(f_n)$ converges uniformly on $[a,b]$.
 ]
 #proof[
-  Let $(f_n) -> f$ and $(g_n) -> g$. Then by the lemma above, $abs(f) <= M$.
-
-  Let $epsilon > 0$ be given. By uniform convergence of the two sequences, there exist $N_f, N_g in NN$ such that
-  $
-    abs(f_(n)(x) - f(x)) < epsilon/(2M) \
-    "and" \
-    abs(g_(m)(x) - g(x)) < epsilon/(2M)
-  $
-  whenever $n >= N_f$ and $m >= N_g$. Let $N = max(N_f, N_g)$ and let $n >= N$. We show uniform convergence to the function $f dot g$ by adding and subtracting $f(x) g_(n)(x)$ and applying the triangle inequality:
-  $
-    & abs(f_(n)(x)g_(n)(x) - f(x)g(x)) \
-    = & abs(f_(n)(x)g_(n)(x) - f(x)g_(n)(x) + f(x)g_(n)(x) - f(x)g(x)) \
-   <= & abs(f_(n)(x)g_(n)(x) - f(x)g_(n)(x)) + abs(f(x)g_(n)(x) - f(x)g(x)) \
-    = & abs(g_(n)(x)) abs(f_(n)(x) - f(x)) + abs(f(x)) abs(g_(n)(x) - g(x)) \
-   <= & M dot epsilon/(2M) + M dot epsilon/(2M) \
-    = & epsilon .
-  $
+  Let $epsilon > 0$ be given and let $x in [a,b]$ be arbitrary.
   
-  Since $x in A$ was arbitrary and the choice of $N$ depended only on $epsilon$ and $M$, the convergence is uniform.
-]
+  Since the sequence of real numbers $(f_(n)(x_0))$ converges, it is Cauchy, so there exists some $N_1 in NN$ such that
+  $
+    abs(f_(n)(x_0) - f_(m)(x_0)) < epsilon/2
+  $ <eq1>
+  whenever $m,n >= N_1$.
 
+  By uniform convergence of $(f'_n)$ and the Cauchy Criterion for Uniform Convergence, there exists some $N_2 in NN$ such that
+  $
+    abs(f'_(n)(y) - f'_(m)(y)) < epsilon/(2 (b-a))
+  $
+  whenever $m,n >= N_2$ for all $y in [a,b]$.
+
+  Let $N = max(N_1, N_2)$ and let $m,n >= N$.
+
+  If $x = x_0$ then
+  $
+    abs(f_(n)(x) - f_(m)(x)) = abs(f_(n)(x_0) - f_(m)(x_0)) < epsilon/2 < epsilon
+  $
+  by @eq1.
+
+  Otherwise, by the Mean Value Theorem applied to the function $f_(m)(y) - f_(n)(y)$ on the interval $[x_0, x] subset.eq [a,b]$ (if $x < x_0$ the argument is the same), there exists some $alpha in [x_0,x]$ such that
+  $
+    frac((f_(n)(x) - f_(m)(x)) - (f_(n)(x_0) - f_(m)(x_0)), x - x_0) = f'_(n)(alpha) - f'_(m)(alpha),
+  $
+  but
+  $
+    abs(f'_(n)(alpha) - f'_(m)(alpha)) < epsilon/(2 (b-a)),
+  $
+  so
+  $
+    abs((f_(n)(x) - f_(m)(x)) - (f_(n)(x_0) - f_(m)(x_0))) < abs(x-x_0) epsilon/(2 (b-a)) .
+  $
+
+  Since $x,x_0 in [a,b]$,
+  $
+    abs(x - x_0) <= b-a,
+  $
+  so
+  $
+    abs((f_(n)(x) - f_(m)(x)) - (f_(n)(x_0) - f_(m)(x_0))) < abs(x-x_0) epsilon/(2(b-a)) <= epsilon/2 .
+  $
+
+  Now by the triangle inequality,
+  $
+    abs(f_(n)(x) - f_(m)(x)) \
+     <= & abs((f_(n)(x) - f_(m)(x)) - (f_(n)(x_0) - f_(m)(x_0))) + abs(f_(n)(x_0) - f_(m)(x_0)) \
+     < & epsilon/2 + epsilon/2 \
+     = & epsilon .
+  $
+
+  So by the Cauchy Criterion for Uniform Convergence, since the choice of $N$ was independent of $x$, $(f_n)$ converges uniformly.
+]
