@@ -75,8 +75,29 @@ The series cannot converge for any point $x$ with $abs(x) > 1$ because that woul
 = Problem 2
 Exercise 6.5.2
 
-= Problem 3
+= Problem 3: Absolute convergence at $c$ $=>$ uniform convergence on $[-abs(c), abs(c)]$
 Exercise 6.5.3
+
+#theorem[
+  If a power series $sum_(n=0)^infinity a_n x^n$ converges absolutely at a point $x_0$, then it converges uniformly on the closed interval $[-c, c]$, where $c = abs(x_0)$.
+]
+#proof[
+  Define
+  $
+    M_n = abs(a_n x_0^n)
+  $
+
+  and let $x$ be any point in $[-c, c]$ where $c = abs(x_0)$. Then
+  $
+    abs(x) <= abs(x_0)
+  $
+  so, by the multiplicative property of the absolute value function,
+  $
+    abs(a_n x^n) <= abs(a_n x_0^n) = M_n .
+  $
+
+  Absolute convergence of $sum_(n=0)^infinity a_n x_0^n$ is equivalent to saying that the sum $sum_(n=0)^infinity M_n$ converges. By the Weierstrass M-Test, $sum_(n=0)^infinity a_n x^n$ converges uniformly whenever $x in [-c,c]$.
+]
 
 = Problem 4
 Exercise 6.5.5
