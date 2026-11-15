@@ -94,8 +94,57 @@ Let $y=(g^(-1))^(-1)$. Then
   as desired.
 ]
 
-= Problem 2
+= Problem 2: One-sided axioms are enough
 Exercise 2.7 on p. 54.
+
+#theorem[
+Let $G$ be a set with a composition law satisfying the following axioms:
+
+(a) (*Right-Identity Axiom*) There is an element $e in G$ so that $g dot e = g$ for all $g in G$.
+
+(b) (*Right-Inverse Axiom*) For all $g in G$ there is an element $h in G$ so that $g dot h = e$.
+
+(c) (*Associative Law*) $g_1 dot (g_2 dot g_3) = (g_1 dot g_2) dot g_3$ for all $g_1, g_2, g_3 in G$.
+
+Then $G$ is a group.
+]
+#proof[
+  Let $g$ be any element of $G$. Then it has a right-inverse $h in G$ satisfying
+  $
+    g dot h = e .
+  $
+
+  Multiply on both sides by $h$ on the left to obtain
+  $
+    h dot (g dot h) = h dot e .
+  $
+
+  By axiom (a), the right hand side above equals $h$, and we may regroup the left hand side by associativity to obtain:
+  $
+    (h dot g) dot h = h .
+  $
+
+  We now multiply both sides on the right by a right-inverse of $h$, call it $f$:
+  $
+    ((h dot g) dot h) dot f &= h dot f quad && #[multiplying both sides on the right by $f$]\
+    (h dot g) dot (h dot f) &= h dot f quad && #[by associativity] \
+    (h dot g) dot e &= e quad && #[since $f$ is a right-inverse of $h$] \
+    h dot g &= e quad && #[since $e$ is the right-identity]
+  $
+
+  Since $g$ was arbitrary, we have shown that a right-inverse of any element is also a left-inverse.
+
+  Now let $e$ be the element from axiom (a) and $g$ be any element of $G$, and $h$ a right-inverse of $g$. Then
+  $
+    g e &= g (h g) quad && #[since $h$ is also a left-inverse of $g$]\
+    g   &= g (h g) quad && #[since $e$ is a right-identity]\
+    g   &= (g h) g quad && #[by associativity] \
+    g   &= e g     quad && #[since $h$ is a right-inverse of $g$]
+  $
+  so $e$ is also a left-identity.
+
+  Hence $e$ is a two-sided identity and right-inverses are two-sided inverses, so $G$ satisfies the axioms of a group.
+]
 
 = Problem 3
 Exercise 2.10 on p. 55.
